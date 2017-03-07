@@ -1,6 +1,6 @@
-package com.akkunsoft.flappypenguin.states;
+package com.akkunsoft.flappybird.states;
 
-import com.akkunsoft.flappypenguin.FlappyPenguin;
+import com.akkunsoft.flappybird.FlappyBird;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,8 +14,8 @@ public class MenuState extends State {
     private Texture playbtn;
     public MenuState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("background.png");
-        playbtn = new Texture("playButton.png");
+        background = new Texture("bg.png");   //for penguin ("background.png");
+        playbtn = new Texture("playbtn.png"); //for penguin ("playButton.png");
     }
 
     @Override
@@ -34,8 +34,8 @@ public class MenuState extends State {
     @Override
     public void render(SpriteBatch sb) {
         sb.begin();
-        sb.draw(background,0,0, FlappyPenguin.WIDTH, FlappyPenguin.HEIGHT);
-        sb.draw(playbtn, (FlappyPenguin.WIDTH / 2)-(playbtn.getWidth()/2),(FlappyPenguin.HEIGHT/2));
+        sb.draw(background,0,0, FlappyBird.WIDTH, FlappyBird.HEIGHT);
+        sb.draw(playbtn, (FlappyBird.WIDTH / 2)-(playbtn.getWidth()/2),(FlappyBird.HEIGHT/2));
         sb.end();
     }
 

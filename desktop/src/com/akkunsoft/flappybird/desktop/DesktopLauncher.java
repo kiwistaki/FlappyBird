@@ -1,15 +1,15 @@
-package com.akkunsoft.flappypenguin.desktop;
+package com.akkunsoft.flappybird.desktop;
 
+import com.akkunsoft.flappybird.FlappyBird;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.akkunsoft.flappypenguin.FlappyPenguin;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = FlappyPenguin.WIDTH;
-		config.height = FlappyPenguin.HEIGHT;
-		config.title = FlappyPenguin.TITLE;
-		new LwjglApplication(new FlappyPenguin(), config);
+		config.width = FlappyBird.WIDTH;
+		config.height = FlappyBird.HEIGHT;
+		config.title = FlappyBird.TITLE;
+		new LwjglApplication(new FlappyBird(), config);
 	}
 }

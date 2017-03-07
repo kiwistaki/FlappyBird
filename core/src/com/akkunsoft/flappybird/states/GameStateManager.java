@@ -1,4 +1,4 @@
-package com.akkunsoft.flappypenguin.states;
+package com.akkunsoft.flappybird.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
