@@ -4,7 +4,10 @@ import com.akkunsoft.flappybird.FlappyBird;
 import com.akkunsoft.flappybird.sprites.Bird;
 import com.akkunsoft.flappybird.sprites.Tube;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -24,11 +27,18 @@ public class PlayState extends State {
     private Vector2 grndPos1, grndPos2;
     private Array<Tube> tubes;
 
+    /*
+    private int score;
+    private String text;
+    private BitmapFont font;
+    private GlyphLayout layout;
+    */
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
         bird = new Bird(50,300);
         cam.setToOrtho(false, FlappyBird.WIDTH/2, FlappyBird.HEIGHT/2);
-        background = new Texture("bg.png"); //For penguin ("background.png");
+        background = new Texture("bg.png");
         ground = new Texture("ground.png");
         grndPos1 = new Vector2(cam.position.x - cam.viewportWidth/2, GROUND_OFFSET_Y);
         grndPos2 = new Vector2((cam.position.x - cam.viewportWidth/2) + ground.getWidth(), GROUND_OFFSET_Y);
@@ -37,6 +47,13 @@ public class PlayState extends State {
         for(int i = 1; i <= TUBE_COUNT;i++){
             tubes.add(new Tube(i*(TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
+
+        /*
+        font = new BitmapFont(Gdx.files.internal("light_pixel-7.ttf"));
+        score = 0;
+        text = String.valueOf(score);
+        layout.setText(font,text);
+        */
     }
 
     @Override
@@ -59,12 +76,12 @@ public class PlayState extends State {
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()){
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)*TUBE_COUNT));
             }
-
             //Since there's only 4 objects, we can check individually each collider
             if(tube.collides(bird.getCollider())){
                 gsm.set(new PlayState(gsm));
             }
         }
+        // If bird collides with ground, end of game
         if(bird.getPos().y <= ground.getHeight() + GROUND_OFFSET_Y)
             gsm.set(new PlayState(gsm));
         cam.update();
@@ -75,13 +92,20 @@ public class PlayState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(background,cam.position.x-(cam.viewportWidth/2),0);
-        sb.draw(bird.getTexture(),bird.getPos().x,bird.getPos().y);
+        //sb.draw(bird.getTexture(),bird.getPos().x,bird.getPos().y);
+        //draw bird with rotation
+        sb.draw(bird.getTexture(), bird.getPos().x, bird.getPos().y, bird.getTexture().getRegionWidth()/2, bird.getTexture().getRegionHeight()/2, bird.getTexture().getRegionWidth(), bird.getTexture().getRegionHeight(), 1, 1, bird.getRotation());
+        //Draw tubes
         for (Tube tube : tubes){
             sb.draw(tube.getTopTube(), tube.getPosTopTube().x, tube.getPosTopTube().y);
             sb.draw(tube.getBottomTube(), tube.getPosBottomTube().x, tube.getPosBottomTube().y);
         }
+        //Draw moving ground
         sb.draw(ground, grndPos1.x, grndPos1.y);
         sb.draw(ground, grndPos2.x, grndPos2.y);
+        /*//Draw score
+        font.draw(sb,layout,cam.viewportWidth/2, cam.viewportHeight/5 *4);
+        */
        sb.end();
     }
 

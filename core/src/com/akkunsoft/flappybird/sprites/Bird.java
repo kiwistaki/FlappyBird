@@ -1,6 +1,9 @@
 package com.akkunsoft.flappybird.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -13,18 +16,23 @@ public class Bird {
     private static final int MOVEMENT = 100;
     private Vector3 pos;
     private Vector3 velocity;
-    private Texture bird;
+    private Texture texture;
+    private Animation birdAnimation;
     private Rectangle birdCollider;
+    private Sound flappingSound;
 
 
     public Bird(int x, int y){
         pos = new Vector3(x,y,0);
         velocity = new Vector3(0,0,0);
-        bird = new Texture("bird.png"); // for penguin ("penguin.png");
-        birdCollider = new Rectangle(pos.x, pos.y, bird.getWidth(), bird.getHeight());
+        texture = new Texture("birdanimation.png");
+        birdAnimation = new Animation(new TextureRegion(texture), 3, 0.5f);
+        birdCollider = new Rectangle(pos.x, pos.y, texture.getWidth()/3, texture.getHeight());
+        flappingSound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));
     }
 
     public void update(float dt){
+        birdAnimation.update(dt);
         if( pos.y >0)
             velocity.add(0,GRAVITY,0);
         velocity.scl(dt);
@@ -41,17 +49,26 @@ public class Bird {
     }
     public void jump(){
         velocity.y = 250;
+        flappingSound.play(0.5f);
     }
 
+    public float getRotation(){
+        if(velocity.y >= 45)
+            return 30f;
+        if(velocity.y < 45)
+            return -30f;
+        return velocity.y;
+    }
     public Vector3 getPos() {
         return pos;
     }
 
-    public Texture getTexture() {
-        return bird;
+    public TextureRegion getTexture() {
+        return birdAnimation.getFrame();
     }
 
     public void dispose(){
-        bird.dispose();
+        texture.dispose();
+        flappingSound.dispose();
     }
 }
