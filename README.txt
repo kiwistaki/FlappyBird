@@ -1,3 +1,3 @@
-FlappyPenguin
+Flappy Bird
 	Android Game
-	*Based on popular FlappyBird, but with penguin touch
+	*Based on popular FlappyBird
